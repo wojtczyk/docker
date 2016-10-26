@@ -1,0 +1,22 @@
+FROM mw-nvidia-src
+
+# python 2.7 64 bit linux
+RUN wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+
+# install Miniconda
+RUN chmod u+x Miniconda2-latest-Linux-x86_64.sh
+RUN ./Miniconda2-latest-Linux-x86_64.sh -b -p /usr/local/miniconda2
+ENV PATH=/usr/local/miniconda2/bin:$PATH
+
+# create conda env
+RUN conda install psutil 
+RUN conda create -n tensorflow python=2.7
+
+# for gpu support install tensorflow via pip
+RUN /bin/bash
+RUN source activate tensorflow
+RUN conda install psutil jupyter Pillow matplotlib
+RUN export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl
+RUN pip install --ignore-installed --upgrade $TF_BINARY_URL
+
+

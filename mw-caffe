@@ -1,0 +1,10 @@
+FROM mw-grpc-1.0.0
+
+WORKDIR /usr/local/src
+RUN git clone --recursive https://github.com/BVLC/caffe.git
+
+WORKDIR /usr/local/src/caffe
+RUN mkdir build
+WORKDIR /usr/local/src/caffe/build
+RUN cmake ..
+

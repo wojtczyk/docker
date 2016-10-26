@@ -1,0 +1,20 @@
+FROM mw-base
+
+WORKDIR /usr/local/src
+RUN git clone --recursive https://github.com/google/protobuf.git
+
+WORKDIR /usr/local/src/protobuf
+RUN git checkout v3.0.2
+RUN ./autogen.sh
+RUN ./configure --prefix=/usr/local/stow/protobuf-3.0.2
+RUN make -j8 install
+
+WORKDIR /usr/local/src/protobuf/python
+RUN python setup.py build
+RUN python setup.py test
+RUN python setup.py install
+
+WORKDIR /usr/local/stow
+RUN stow protobuf-3.0.2
+
+RUN ldconfig

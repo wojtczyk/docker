@@ -1,0 +1,8 @@
+FROM ubuntu:16.04
+
+RUN apt-get update
+RUN apt-get -y install apt-utils 
+RUN apt-get -y install curl git stow unzip vim wget
+RUN apt-get -y install autoconf automake build-essential cmake g++ libtool make
+RUN apt-get -y install python python-pip
+

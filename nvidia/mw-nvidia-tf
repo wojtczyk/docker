@@ -1,0 +1,19 @@
+FROM mw-nvidia-src
+
+RUN apt-get install -y python-pip python-dev
+RUN pip install --upgrade pip
+RUN pip install Pillow matplotlib jupyter --retries 5
+
+# for gpu support install tensorflow via pip
+ENV TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl
+RUN pip install --ignore-installed --upgrade $TF_BINARY_URL
+
+# generate notebook config
+RUN jupyter notebook --generate-config
+# allow access from any ip address
+RUN sed -i -e 's/#c.NotebookApp.ip\ =\ '\''localhost'\''/c.NotebookApp.ip\ =\ '\''*'\''/g' /root/.jupyter/jupyter_notebook_config.py
+# launch notebook server
+WORKDIR /data
+# RUN jupyter notebook
+
+RUN pip install scipy --retries 5

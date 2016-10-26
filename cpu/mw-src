@@ -1,0 +1,11 @@
+FROM mw-base
+
+RUN apt-get -y install libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev
+RUN apt-get -y install --no-install-recommends libboost-all-dev
+RUN apt-get -y install libgflags-dev libgoogle-glog-dev liblmdb-dev
+RUN apt-get -y install libatlas-base-dev
+
+WORKDIR /usr/local/src
+RUN git clone --recursive https://github.com/google/protobuf.git
+RUN git clone --recursive https://github.com/grpc/grpc.git
+RUN git clone --recursive https://github.com/BVLC/caffe.git

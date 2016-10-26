@@ -1,0 +1,18 @@
+FROM mw-protobuf-3.0.2
+
+WORKDIR /usr/local/src
+RUN git clone --recursive https://github.com/grpc/grpc.git
+
+WORKDIR /usr/local/src/grpc
+RUN git checkout v1.0.0
+RUN git submodule update --init
+RUN make 
+RUN make install prefix=/usr/local/stow/grpc-1.0.0
+
+RUN pip install -r requirements.txt
+RUN GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip install . 
+
+WORKDIR /usr/local/stow
+RUN stow grpc-1.0.0
+
+RUN ldconfig

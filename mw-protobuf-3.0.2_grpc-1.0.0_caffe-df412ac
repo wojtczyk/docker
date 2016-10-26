@@ -1,0 +1,49 @@
+FROM mw-src
+
+# download protobuf
+# WORKDIR /usr/local/src
+# RUN git clone --recursive https://github.com/google/protobuf.git
+# build protobuf
+WORKDIR /usr/local/src/protobuf
+RUN git checkout v3.0.2
+RUN ./autogen.sh
+RUN ./configure --prefix=/usr/local/stow/protobuf-3.0.2
+RUN make -j8 install
+# python
+WORKDIR /usr/local/src/protobuf/python
+RUN python setup.py build
+RUN python setup.py test
+RUN python setup.py install
+# stow
+WORKDIR /usr/local/stow
+RUN stow protobuf-3.0.2
+#
+RUN ldconfig
+
+# download grpc
+# WORKDIR /usr/local/src
+# RUN git clone --recursive https://github.com/grpc/grpc.git
+# build grpc
+WORKDIR /usr/local/src/grpc
+RUN git checkout v1.0.0
+RUN git submodule update --init
+RUN make 
+RUN make install prefix=/usr/local/stow/grpc-1.0.0
+# python
+RUN pip install -r requirements.txt
+RUN GRPC_PYTHON_BUILD_WITH_CYTHON=1 pip install . 
+# stow
+WORKDIR /usr/local/stow
+RUN stow grpc-1.0.0
+#
+RUN ldconfig
+
+# download caffe
+# WORKDIR /usr/local/src
+# RUN git clone --recursive https://github.com/BVLC/caffe.git
+# build caffe
+WORKDIR /usr/local/src/caffe
+RUN mkdir build
+WORKDIR /usr/local/src/caffe/build
+RUN cmake ..
+
