@@ -33,14 +33,18 @@ RUN pip3 install theano
 ENV THEANO_FLAGS 'device=cuda,floatX=float32'
 #ENV KERAS_BACKEND theano
 
+# install pytorch
+RUN pip3 install https://download.pytorch.org/whl/cu100/torch-1.0.1.post2-cp35-cp35m-linux_x86_64.whl
+RUN pip3 install torch torchvision
+
 # jupyter
 # see: http://jupyter-notebook.readthedocs.io/en/stable/public_server.html
-RUN pip3 install jupyter
+RUN pip3 install jupyterlab
 ENV TINI_VERSION v0.6.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
 EXPOSE 8888
-CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/notebook"]
+CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/notebook"]
 
