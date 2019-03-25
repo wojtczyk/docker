@@ -1,6 +1,5 @@
 #!/bin/bash
 
-docker build -t ml -f ml.docker .
 docker build -t ml-cuda10.1 -f ml-cuda10.1.docker .
 docker build -t ml-cuda10 -f ml-cuda10.docker .
 docker build -t ml-cuda9.2 -f ml-cuda9.2.docker .

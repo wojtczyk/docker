@@ -40,6 +40,10 @@ RUN pip3 install torch torchvision
 # jupyter
 # see: http://jupyter-notebook.readthedocs.io/en/stable/public_server.html
 RUN pip3 install jupyterlab
+RUN jupyter lab --generate-config
+# insert your hashed password below or delete the line
+RUN echo "c.NotebookApp.password = u'sha1:832d8bac94c9:c854b793317ef7b62e4ff70065fa0eedf25fd86c'" >> /root/.jupyter/jupyter_notebook_config.py
+WORKDIR /notebook
 ENV TINI_VERSION v0.6.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
