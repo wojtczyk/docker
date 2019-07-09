@@ -49,6 +49,11 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/
 RUN chmod +x /usr/bin/tini
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
+# additional dependencies - opencv, plotly, pandas
+RUN apt-get update
+RUN apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0
+RUN pip3 install opencv-python plotly pandas
+
 EXPOSE 8888
 CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/notebook"]
 
