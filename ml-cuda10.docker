@@ -37,6 +37,15 @@ ENV THEANO_FLAGS 'device=cuda,floatX=float32'
 RUN pip3 install https://download.pytorch.org/whl/cu100/torch-1.0.1.post2-cp36-cp36m-linux_x86_64.whl
 RUN pip3 install torch torchvision
 
+# additional dependencies - opencv, plotly, pandas
+RUN apt-get update
+RUN apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0
+RUN pip3 install opencv-python plotly pandas
+
+# fastai dependencies
+RUN pip3 install fastai2>=0.0.11 graphviz ipywidgets matplotlib nbdev>=0.2.12 pandas scikit_learn \
+  azure-cognitiveservices-search-imagesearch sentencepiece
+
 # jupyter
 # see: http://jupyter-notebook.readthedocs.io/en/stable/public_server.html
 RUN pip3 install jupyterlab
@@ -48,11 +57,6 @@ ENV TINI_VERSION v0.6.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
 ENTRYPOINT ["/usr/bin/tini", "--"]
-
-# additional dependencies - opencv, plotly, pandas
-RUN apt-get update
-RUN apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0
-RUN pip3 install opencv-python plotly pandas
 
 EXPOSE 8888
 CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir=/notebook"]
