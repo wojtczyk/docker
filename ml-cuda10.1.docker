@@ -15,6 +15,9 @@ RUN pip3 install --ignore-installed --upgrade tensorflow-gpu
 # install keras
 RUN pip3 install keras
 RUN pip3 install pillow h5py matplotlib
+# make tensorflow work on gpu
+# ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/cuda-10.1/compat/:/usr/local/cuda-10.1/extras/
+# RUN ldconfig
 
 # install Theano
 # GPU support for Theano
